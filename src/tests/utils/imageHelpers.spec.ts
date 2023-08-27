@@ -2,6 +2,7 @@ import path from 'path'
 import Jimp from 'jimp'
 import {promises as fs} from 'fs'
 import {
+  compressImage,
   fileExists,
   getImageFilePath,
   imageProcessing } from '../../utils/imageHelpers'
@@ -43,7 +44,7 @@ describe('test image file helpers', () => {
     })
   })
 
-  describe('test image processing', () => {
+  describe('test image resize', () => {
     const filename = 'lake';
     const imageDir = path.join(__dirname, '../assets/full')
     const outputDir = path.join(__dirname, '../assets/thumb')
@@ -56,7 +57,8 @@ describe('test image file helpers', () => {
 
     it('should return processed image absolute path', async () => {
       const filepath = await getImageFilePath(filename, imageDir)
-      const expectedOutput = path.join(outputDir, path.basename(filepath))
+      const expectedOutput = path.join(outputDir,
+          `resized-${path.basename(filepath)}` )
       const output = await imageProcessing(filepath, outputDir, width, height)
       expect(output).toEqual(expectedOutput)
     })
@@ -67,6 +69,24 @@ describe('test image file helpers', () => {
       const image = await Jimp.read(output)
       expect(image.bitmap.width).toEqual(256)
       expect(image.bitmap.height).toEqual(256)
+    })
+  })
+
+  describe('test image compress', () => {
+    const filename = 'lake';
+    const imageDir = path.join(__dirname, '../assets/full')
+    const outputDir = path.join(__dirname, '../assets/thumb')
+
+    afterAll(async () => {
+      await fs.rm(outputDir, {recursive: true})
+    })
+
+    it('should return processed image absolute path', async () => {
+      const filepath = await getImageFilePath(filename, imageDir)
+      const expectedOutput = path.join(outputDir,
+          `compressed-${path.basename(filepath)}` )
+      const output = await compressImage(filepath, outputDir)
+      expect(output).toEqual(expectedOutput)
     })
   })
 })

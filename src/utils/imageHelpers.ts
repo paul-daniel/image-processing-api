@@ -76,7 +76,7 @@ export const imageProcessing = async (
     height: number,
 ) : Promise<string> => {
   try {
-    const output = path.join(outputPath, path.basename(filepath))
+    const output = path.join(outputPath, `resized-${path.basename(filepath)}`)
 
     // check if there is already a resized version
     const fileExist = await fileExists(output)
@@ -85,6 +85,35 @@ export const imageProcessing = async (
     const imageBeingProcessed = await Jimp.read(filepath);
     await imageBeingProcessed
         .resize(width ? width : 256, height ? height : 256)
+        .writeAsync(output)
+    return output
+  } catch (error : unknown) {
+    throw error
+  }
+}
+
+/**
+ * Process an image and return the path of that image
+ *
+ * @param {string} filepath filepath
+ * @param {string} outputPath path to output dir
+ * @return {Promise<string>} path of the image processed
+ */
+export const compressImage = async (
+    filepath : string,
+    outputPath : string,
+) : Promise<string> => {
+  try {
+    const output = path.join(outputPath,
+        `compressed-${path.basename(filepath)}`)
+
+    // check if there is already a resized version
+    const fileExist = await fileExists(output)
+    if (fileExist) return output
+
+    const imageBeingProcessed = await Jimp.read(filepath);
+    await imageBeingProcessed
+        .quality(30)
         .writeAsync(output)
     return output
   } catch (error : unknown) {
