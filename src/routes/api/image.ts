@@ -18,7 +18,7 @@ image.get('/', async (req:express.Request, res:express.Response) => {
   }
 })
 
-image.get('/process', async (req: express.Request, res: express.Response) => {
+image.get('/resize', async (req: express.Request, res: express.Response) => {
   try {
     const {filename, width, height} = req.query
 
@@ -42,5 +42,7 @@ image.get('/process', async (req: express.Request, res: express.Response) => {
     res.status(500).send((error as Error).message)
   }
 })
+
+// TODO: ADD IMAGE OPTIMIZER OPTION
 
 export default image;
