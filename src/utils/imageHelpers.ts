@@ -76,9 +76,6 @@ export const imageProcessing = async (
     height: number,
 ) : Promise<string> => {
   try {
-    // const output = path.join(
-    //     __dirname, `../assets/thumb/${path.basename(filepath)}`)
-
     const output = path.join(outputPath, path.basename(filepath))
 
     // check if there is already a resized version

@@ -1,5 +1,10 @@
 import path from 'path'
-import { fileExists, getImageFilePath } from '../../utils/imageHelpers'
+import Jimp from 'jimp'
+import {promises as fs} from 'fs'
+import {
+  fileExists,
+  getImageFilePath,
+  imageProcessing } from '../../utils/imageHelpers'
 
 describe('test image file helpers', () => {
   describe('test file exist case', () => {
@@ -27,9 +32,41 @@ describe('test image file helpers', () => {
       expect(input).toContain('lake.jpg')
     })
 
-    it('should return absolute file path', async () => {
+    it('should reject when file path is empty', async () => {
       await expectAsync(getImageFilePath('', imageDir))
-          .toBeRejectedWith(new Error('No file in image directory'))
+          .toBeRejectedWith(new Error('No corresponding file found.'))
+    })
+
+    it('should reject when file path does not exist', async () => {
+      await expectAsync(getImageFilePath('lak', imageDir))
+          .toBeRejected()
+    })
+  })
+
+  describe('test image processing', () => {
+    const filename = 'lake';
+    const imageDir = path.join(__dirname, '../assets/full')
+    const outputDir = path.join(__dirname, '../assets/thumb')
+    const width = 256
+    const height = 256
+
+    afterAll(async () => {
+      await fs.rm(outputDir, {recursive: true})
+    })
+
+    it('should return processed image absolute path', async () => {
+      const filepath = await getImageFilePath(filename, imageDir)
+      const expectedOutput = path.join(outputDir, path.basename(filepath))
+      const output = await imageProcessing(filepath, outputDir, width, height)
+      expect(output).toEqual(expectedOutput)
+    })
+
+    it('should return processed image with 256x256', async () => {
+      const filepath = await getImageFilePath(filename, imageDir)
+      const output = await imageProcessing(filepath, outputDir, width, height)
+      const image = await Jimp.read(output)
+      expect(image.bitmap.width).toEqual(256)
+      expect(image.bitmap.height).toEqual(256)
     })
   })
 })

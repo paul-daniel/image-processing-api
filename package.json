@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc --build",
-    "test": "npm run build && npm run jasmine",
+    "test": "npx ts-node -T node_modules/jasmine/bin/jasmine",
     "test:watch": "nodemon --watch dist --exec \"npm run test\"",
     "prod": "node dist/index.js",
     "start:prod": "npm run build && npm run prod",
