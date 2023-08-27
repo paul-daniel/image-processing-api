@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsc --build",
     "test": "npx ts-node -T node_modules/jasmine/bin/jasmine",
-    "test:watch": "nodemon --watch dist --exec \"npm run test\"",
+    "test:win:watch": "cross-env MODE=test nodemon --watch \"src/**/*.ts\" --exec \"ts-node -T node_modules/jasmine/bin/jasmine\"",
+    "test:lin:watch" : "cross-env MODE=test nodemon --watch 'src/**/*.ts' --exec 'ts-node -T node_modules/jasmine/bin/jasmine'",
     "prod": "node dist/index.js",
     "start:prod": "npm run build && npm run prod",
     "start": "nodemon --config nodemon.json src/index.ts",
@@ -28,6 +29,7 @@
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
     "@typescript-eslint/parser": "^6.4.1",
+    "cross-env": "^7.0.3",
     "eslint": "^8.48.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^9.0.0",
