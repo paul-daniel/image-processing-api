@@ -1,56 +1,17 @@
-# Node & Express Boilerplate with Nodemon, ESLint, Prettier, and Jasmine
+# Express TypeScript Image Processing API
 
-This is a simple boilerplate to kickstart a Node.js and Express project with Nodemon, ESLint, Prettier, and Jasmine pre-configured.
+## Overview
+
+This API provides an image processing service to resize and compress images. It's perfect for improving website load times and quality, especially for e-commerce platforms.
+
+Built using:
+- Node.js
+- Express
+- TypeScript
+- Sharp (For image processing)
 
 ## Features
 
-- **Nodemon**: Automatically restarts the application when file changes are detected.
-- **ESLint**: Identifies and fixes code that does not follow certain style guidelines.
-- **Prettier**: An opinionated code formatter that integrates with ESLint.
-- **Jasmine**: A behavior-driven development framework for testing your JavaScript code.
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js and npm must be installed. You can download and install them from [nodejs.org](https://nodejs.org/).
-
-### Installation
-
-1. Clone the repository:
-
-    ```bash
-    git clone https://github.com/your-username/your-repository-name.git
-    ```
-
-2. Navigate into the project directory:
-
-    ```bash
-    cd your-repository-name
-    ```
-
-3. Install the dependencies:
-
-    ```bash
-    npm install
-    ```
-
-### Running the Application
-
-To start the development server:
-
-```bash
-npm start
-```
-
-### Running test
-
-To start the development server:
-
-```bash
-npm run test
-```
-
-### Running test
-
-This project is licensed under the MIT License - see the LICENSE.md
+1. **Image Resizing**
+2. **Image Compression**
+3. **Image Background Removal**(coming)
