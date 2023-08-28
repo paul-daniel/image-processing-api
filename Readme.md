@@ -14,4 +14,4 @@ Built using:
 
 1. **Image Resizing**
 2. **Image Compression**
-3. **Image Background Removal**(coming)
+3. **Image Background Removal**
