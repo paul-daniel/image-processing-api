@@ -2,7 +2,8 @@ import express from 'express'
 import {
   compressImage,
   getImageFilePath,
-  imageProcessing } from '../../utils/imageHelpers'
+  imageProcessing,
+  removeBgFunction} from '../../utils/imageHelpers'
 import path from 'path'
 
 const image = express.Router()
@@ -46,7 +47,6 @@ image.get('/resize', async (req: express.Request, res: express.Response) => {
   }
 })
 
-// TODO: ADD IMAGE OPTIMIZER OPTION
 image.get('/compress', async (req: express.Request, res: express.Response) => {
   try {
     const {filename} = req.query
@@ -59,6 +59,25 @@ image.get('/compress', async (req: express.Request, res: express.Response) => {
     const outputDir = path.join(__dirname, '../../assets/thumb')
     const input = await getImageFilePath(filename as string, imageDir);
     const processed = await compressImage(input, outputDir)
+
+    res.status(200).sendFile(processed)
+  } catch (error) {
+    res.status(500).send((error as Error).message)
+  }
+})
+
+image.get('/removebg', async (req: express.Request, res: express.Response) => {
+  try {
+    const {filename} = req.query
+
+    if (!filename) {
+      throw new Error('no filename provided')
+    }
+
+    const imageDir = path.join(__dirname, '../../assets/full')
+    const outputDir = path.join(__dirname, '../../assets/thumb')
+    const input = await getImageFilePath(filename as string, imageDir);
+    const processed = await removeBgFunction(input, outputDir)
 
     res.status(200).sendFile(processed)
   } catch (error) {

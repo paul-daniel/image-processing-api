@@ -1,6 +1,7 @@
 import path from 'path'
 import {promises as fs} from 'fs'
 import Jimp from 'jimp'
+import { removeBackgroundFromImageFile } from 'remove.bg'
 
 /**
  * check if file exist or not
@@ -118,5 +119,39 @@ export const compressImage = async (
     return output
   } catch (error : unknown) {
     throw error
+  }
+}
+
+/**
+ * Remove background of an image and return the path of the processed image
+ *
+ * @param {string} filepath filepath
+ * @param {string} outputPath path to output dir
+ * @return {Promise<string>} path to the image processed
+ */
+export const removeBgFunction = async (
+    filepath : string,
+    outputPath : string,
+) : Promise<string> => {
+  try {
+    const outputFile = path.join(outputPath,
+        `rmBg-${path.basename(filepath)}`)
+
+    const fileExist = await fileExists(outputFile)
+    if (fileExist) return outputFile
+
+    await removeBackgroundFromImageFile({
+      path: filepath,
+      apiKey: process.env.REMOVE_BG_API_KEY ?? '',
+      size: 'regular',
+      type: 'person',
+      crop: true,
+      scale: '100%',
+      outputFile,
+    })
+
+    return outputFile
+  } catch (errors : unknown) {
+    throw new Error(JSON.stringify(errors))
   }
 }
